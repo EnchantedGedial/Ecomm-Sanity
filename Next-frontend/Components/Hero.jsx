@@ -1,12 +1,13 @@
 import React from 'react'
-import { useRouter } from 'next/router';
-import { urlFor } from '../../backend/Lib/client'
+
+import { urlFor } from '../../Sanity-backend/Lib/client'
 import Link from 'next/link'
 
 const Hero = ({heroBanner}) => {
   return (
     <>
     {console.log(heroBanner)}
+  
     <section className="text-gray-600 body-font">
   <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
     <img className="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded" alt="hero" src={urlFor(heroBanner.image)}/>
