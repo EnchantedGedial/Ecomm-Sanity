@@ -9,63 +9,45 @@ export const StateContext = ({children}  ) => {
 
   const [qty, setQty] = useState(1);
   const [cartItems,SetCartItems] = useState([]);
-  const [totalPrice,setTotalPrice] = useState();
-  const [totalQuantity,setTotalQuantities] = useState();
+  const [totalPrice,setTotalPrice] = useState(0);
+  const [totalQuantity,setTotalQuantities] = useState(0);
 
+{console.log(totalPrice)}
  const onAdd=(product,quantity)=>{
 
-  const checkProductInCart = cartItems.find((items)=>items._id === product._id);
+          const checkProductInCart = cartItems.find((items)=>items._id === product._id);
+          
+          setTotalPrice((prevTotalPrice) => prevTotalPrice + product?.price * quantity);
+          setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
+          if(checkProductInCart){
 
-  setTotalPrice((prevTotalPrice)=>prevTotalPrice + product.price *quantity );
-  setTotalQuantities((prevTotalQuantities)=>prevTotalQuantities + quantity);
-  if(checkProductInCart){
+            const updateCartItems =cartItems.map((cartProduct)=>{
+              
+              
+              if (cartProduct._id === product._id) return{
+                ...cartProduct,
+                quantity:cartProduct.quantity+quantity
+                
 
-    const updateCartItems =cartItems.map((cartProduct)=>{
-
-      if (cartProduct._id === product._id) return{
-        ...cartProduct,
-        quantity:cartProduct.quantity+quantity
-
-
-      }
-    })
-    SetCartItems(updateCartItems);
+              }
+            })
+            SetCartItems(updateCartItems);
 
 
-  }else{
-   
+          }
+          // else{
+          //   setTotalPrice((prevTotalPrice) => prevTotalPrice + product?.price * quantity);
+          //   setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
+            
 
-    product.quantity=quantity;
-    SetCartItems([...cartItems,{...product}]);
-
-  }
+          //  quantity = product.quantity;
+          //   SetCartItems([...cartItems,{...product}]);
+// 
+  // }
 // toast.sucess(`${qty} ${product.name} added to cart`);
 
  }
 
-// const onAdd = (product, quantity) => {
-//   const checkProductInCart = cartItems.find((item) => item._id === product._id);
-  
-//   setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
-//   setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
-  
-//   if(checkProductInCart) {
-//     const updatedCartItems = cartItems.map((cartProduct) => {
-//       if(cartProduct._id === product._id) return {
-//         ...cartProduct,
-//         quantity: cartProduct.quantity + quantity
-//       }
-//     })
-
-//     setCartItems(updatedCartItems);
-//   } else {
-//     product.quantity = quantity;
-    
-//     setCartItems([...cartItems, { ...product }]);
-//   }
-
-  
-// } 
 
 
   const incQty = () => {

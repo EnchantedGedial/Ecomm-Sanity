@@ -8,7 +8,11 @@ import {useStateContext} from'../../Context/StateContext';
 const productDetails = ({ product, products }) => {
   
   const [index, setIndex] = useState(0);
-  const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+  const { decQty, incQty, qty, onAdd } = useStateContext();
+  const handleAddToCart=()=>{
+    onAdd(product,qty);
+  }
+
   return (
     <>
           <section class="text-gray-600 body-font">
@@ -40,7 +44,7 @@ const productDetails = ({ product, products }) => {
                   {/* <Link  href={`/payments`}> */}
             
               <button className="inline-flex text-white bg-purple-500 border-0 mx-2 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg">Place Order</button>
-              <button className="inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg" onClick={() => onAdd(product, qty)}> Add to Cart</button>
+              <button className="inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg" onClick={handleAddToCart}> Add to Cart</button>
               {/* </Link> */}
             
                 </div>
