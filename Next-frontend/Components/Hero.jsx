@@ -2,11 +2,12 @@ import React from 'react'
 
 import { urlFor } from '../../Sanity-backend/Lib/client'
 import Link from 'next/link'
+import Test from './Test'
 
 const Hero = ({heroBanner}) => {
   return (
     <>
-    {console.log(heroBanner)}
+    <Test/>
   
     <section className="text-gray-600 body-font">
   <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
