@@ -5,13 +5,13 @@ import Link from 'next/link'
 
 import {useStateContext} from'../../Context/StateContext';
 
-const productDetails = ({ product, products }) => {
+const productDetails = ({ relatedProducts, products }) => {
   
   const [index, setIndex] = useState(0);
   // Destructuring the values
   const { decQty, incQty, qty, onAdd } = useStateContext();
   const handleAddToCart=()=>{
-    onAdd(product,qty);
+    onAdd(products,qty);
   }
 
   return (
