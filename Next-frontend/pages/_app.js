@@ -1,4 +1,5 @@
 import Footer from '@/Components/Footer'
+import Layout from '@/Components/Layout'
 import Navbar from '@/Components/Navbar'
 import {StateContext} from '@/Context/StateContext'
 // import {StateContext} from '@/Context/StateContext'
@@ -10,13 +11,10 @@ export default function App({ Component, pageProps }) {
   return (
 
     <StateContext>
-    
-         <Navbar/>
-  
- 
+    <Layout>
        <Component {...pageProps} />
        <Footer/>
-
+    </Layout>
     </StateContext>
 
     
