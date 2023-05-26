@@ -1,68 +1,95 @@
 
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Context = createContext();
 
 export const StateContext = ({children}  ) => {
 
+ 
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantities, setTotalQuantities] = useState(0);
   const [qty, setQty] = useState(1);
-  const [cartItems,SetCartItems] = useState([]);
-  const [totalPrice,setTotalPrice] = useState(0);
-  const [totalQuantity,setTotalQuantities] = useState(0);
 
  
 
 
   
+ 
 
 
-
- const onAdd=(products,quantity)=>{
-   const checkProductInCart = cartItems.find((items)=>items._id === products._id);
-   console.log(cartItems)
+ const onAdd=(product,quantity)=>{
+   const checkProductInCart = cartItems.find((items)=>items._id === product._id);
    
-   setTotalPrice((prevTotalPrice) => prevTotalPrice + products?.price * quantity);
+   
+   setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
    setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
    if(checkProductInCart){
      
      const updateCartItems =cartItems.map((cartProduct)=>{
        
        
-       if (cartProduct._id === products._id) return{
-         ...cartProduct,quantity:cartProduct.quantity+quantity }
-            })
+       if (cartProduct._id === product._id) return{
+         ...cartProduct,
+         quantity:cartProduct.quantity+quantity
+         } })
             
-            SetCartItems(updateCartItems);
+            setCartItems(updateCartItems);
 
 
           }
-          else{
-            // setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
-            // setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
+  //         else{
+  // //           // setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
+  // //           // setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
             
 
-           quantity = products.quantity;
-            SetCartItems([...cartItems,{...products}]);
+  // product.quantity =quantity;
+  //           SetCartItems([...cartItems,{...product}]);
 
-  }
+  // }
 // toast.sucess(`${qty} ${products.name} added to cart`);
+<ToastContainer />
 
  }
 
 
+//   const checkProductInCart = cartItems.find((item) => item._id === product._id);
+  
+//   setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
+//   setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
+  
+//   if(checkProductInCart) {
+//     const updatedCartItems = cartItems.map((cartProduct) => {
+//       if(cartProduct._id === product._id) return {
+//         ...cartProduct,
+//         quantity: cartProduct.quantity + quantity
+//       }
+//     })
+
+//     setCartItems(updatedCartItems);
+//   } else {
+//     product.quantity = quantity;
+    
+//     setCartItems([...cartItems, { ...product }]);
+//   }
+
+//   toast.success(`${qty} ${product.name} added to the cart.`);
+// } 
+
   
 
-  const incQty = () => {0
-    setQty((qty) => qty + 1);
+  const incQty = () => {
+    setQty((prevQty) => prevQty + 1);
   }
 
   const decQty = () => {
-    setQty((qty) => {
-      if(qty - 1 < 1) return 1;
+    setQty((prevQty) => {
+      if(prevQty - 1 < 1) return 1;
      
-      return qty - 1;
+      return prevQty - 1;
     });
   }
 
@@ -74,7 +101,7 @@ export const StateContext = ({children}  ) => {
         incQty,
         decQty,
         totalPrice,
-        totalQuantity,
+        totalQuantities,
         cartItems,
         onAdd
 

@@ -1,28 +1,45 @@
 import React, { useState } from 'react'
 import {client,urlFor} from '../../../Sanity-backend/Lib/client'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link'
 
 import {useStateContext} from'../../Context/StateContext';
 
-const productDetails = ({ relatedProducts, products }) => {
+const productDetails = ({ relatedProducts, product }) => {
   
   const [index, setIndex] = useState(0);
   // Destructuring the values
-  const { decQty, incQty, qty, onAdd } = useStateContext();
+  // const { decQty, incQty, qty, onAdd ,prevQty} = useStateContext();
   const handleAddToCart=()=>{
-    onAdd(products,qty);
-  }
+    onAdd(product,qty);
+    // toast();
+    toast.success(`${qty} : ${product.name} added to cart`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 1,
+      theme: "light",
+      });
 
+  }
+  const { decQty, incQty, qty, onAdd } = useStateContext();
+
+
+
+  
   return (
     <>
          <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-96 w-50 object-cover object-center rounded" src={urlFor(products.image && products.image[0])}/>
+      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-96 w-50 object-cover object-center rounded" src={urlFor(product.image && product.image[0])}/>
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{products.name}</h1>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{product.name}</h1>
         <div class="flex mb-4">
           <span class="flex items-center">
             <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-indigo-500" viewBox="0 0 24 24">
@@ -60,13 +77,13 @@ const productDetails = ({ relatedProducts, products }) => {
             </a>
           </span>
         </div>
-        <p class="leading-relaxed">{products.details}</p>
+        <p class="leading-relaxed">{product.details}</p>
         <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
           
          
         </div>
         <div class="flex">
-          <span class="title-font items-center content-center font-medium text-2xl text-gray-900"> Price  :${products.price}</span>
+          <span class="title-font items-center content-center font-medium text-2xl text-gray-900"> Price  :${product.price}</span>
           
          
         </div>
@@ -83,8 +100,19 @@ const productDetails = ({ relatedProducts, products }) => {
                  
             
               <button className="inline-flex text-white bg-purple-500 border-0 mx-2 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg">Place Order</button>
-              <button className="inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg" onClick={handleAddToCart}> Add to Cart</button>
-           
+              <button className="inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg"  onClick={handleAddToCart}> Add to Cart</button>
+              <ToastContainer position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+
             </div>
       </div>
     </div>
@@ -99,53 +127,53 @@ const productDetails = ({ relatedProducts, products }) => {
 }
 
 
-// export const getServerSideProps = async({params:{slug}})=>{
+export const getServerSideProps = async({params:{slug}})=>{
 
-//   const query=`*[_type == "product" && slug.current == '${slug}'][0]`;
-//   const products = await client.fetch(query) ;
-  
-//   const relatedProduct ='*[_type == "product"]';
-//   const relatedProducts = await client.fetch(relatedProduct) ;
-  
-//   return {
-//     props:{products,relatedProducts}
-//   }
-
-// }
-
-export const getStaticPaths = async () => {
-  const query = `*[_type == "product"] {
-    slug {
-      current
-    }
-  }
-  `;
-
-  const products = await client.fetch(query);
-
-  const paths = products.map((product) => ({
-    params: { 
-      slug: product.slug.current
-    }
-  }));
-
-  return {
-    paths,
-    fallback: 'blocking'
-  }
-}
-
-export const getStaticProps = async ({ params: { slug }}) => {
   const query=`*[_type == "product" && slug.current == '${slug}'][0]`;
-  const products = await client.fetch(query) ;
+  const product = await client.fetch(query) ;
   
   const relatedProduct ='*[_type == "product"]';
   const relatedProducts = await client.fetch(relatedProduct) ;
   
   return {
-    props:{products,relatedProducts}
+    props:{product,relatedProducts}
   }
+
 }
+
+// export const getStaticPaths = async () => {
+//   const query = `*[_type == "product"] {
+//     slug {
+//       current
+//     }
+//   }
+//   `;
+
+//   const products = await client.fetch(query);
+
+//   const paths = products.map((product) => ({
+//     params: { 
+//       slug: product.slug.current
+//     }
+//   }));
+
+//   return {
+//     paths,
+//     fallback: 'blocking'
+//   }
+// }
+
+// export const getStaticProps = async ({ params: { slug }}) => {
+//   const query=`*[_type == "product" && slug.current == '${slug}'][0]`;
+//   const product = await client.fetch(query) ;
+  
+//   const relatedProduct ='*[_type == "product"]';
+//   const relatedProducts = await client.fetch(relatedProduct) ;
+  
+//   return {
+//     props:{product,relatedProducts}
+//   }
+// }
 
 
 export default productDetails
